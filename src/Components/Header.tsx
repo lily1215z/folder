@@ -1,11 +1,12 @@
 import React, {ChangeEvent, useState} from 'react';
 
 type HeaderType = {
+    id:string
     title: string
-    addTask: (title:string)=> void
+    addTask: (title:string, todoListId:string)=> void
 }
 
-export const Header:React.FC<HeaderType> = ({title, addTask}) => {
+export const Header:React.FC<HeaderType> = ({title, addTask, id}) => {
     const [newTitle, setNewTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 
@@ -15,7 +16,7 @@ export const Header:React.FC<HeaderType> = ({title, addTask}) => {
     }
     const onClickHandler = () => {
         if(newTitle !== '') {
-            addTask(newTitle.trim())
+            addTask(newTitle.trim(), id)
             setNewTitle('')
         } else {
             setError('mistake')

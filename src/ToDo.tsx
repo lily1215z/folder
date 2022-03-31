@@ -5,12 +5,13 @@ import {Tasks} from "./Components/Tasks";
 import {FilterType, TasksType} from "./App";
 
 type ToDoType = {
+    id:string
     title: string
     tasks: Array<TasksType>
-    remove: (id: string)=> void
-    changeFilter: (value: FilterType) => void
-    addTask: (title:string)=> void
-    changeStatus: (taskId:string, isDone: boolean)=> void
+    remove: (id: string, todoListId:string)=> void
+    changeFilter: (value: FilterType, todoListId:string) => void
+    addTask: (title:string, todoListId:string)=> void
+    changeStatus: (taskId:string, isDone: boolean,  todoListId:string)=> void
     filter: FilterType
 }
 export const ToDo:React.FC<ToDoType> = ({
@@ -20,7 +21,8 @@ export const ToDo:React.FC<ToDoType> = ({
                                             changeFilter,
                                             addTask,
                                             changeStatus,
-                                            filter
+                                            filter,
+                                            id
 }) => {
 
     const resultTasks = tasks.map(i=>{
@@ -31,11 +33,11 @@ export const ToDo:React.FC<ToDoType> = ({
                 <input
                     type="checkbox"
                     checked={i.isDone}
-                    onChange={(e)=>changeStatus(i.id,e.currentTarget.checked)}
+                    onChange={(e)=>changeStatus(i.id,e.currentTarget.checked, id)}
                 />
                 <span>{i.title}</span>
                 <button
-                    onClick={()=>remove(i.id)}
+                    onClick={()=>remove(i.id, id)}
                 >x</button>
             </li>
         )}
@@ -44,6 +46,7 @@ export const ToDo:React.FC<ToDoType> = ({
     return (
         <div>
             <Header
+                id={id}
                 title={title}
                 addTask={addTask}
             />
@@ -51,6 +54,7 @@ export const ToDo:React.FC<ToDoType> = ({
                 resultTasks={resultTasks}
             />
             <Buttons
+                id={id}
                 changeFilter={changeFilter}
                 filter={filter}
             />

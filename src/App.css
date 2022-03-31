@@ -1,6 +1,8 @@
 .App {
-  /*text-align: center;*/
   margin-left: 50px;
+  display: flex;
+  width: 900px;
+  justify-content: space-between;
 }
 
 .misstake {
