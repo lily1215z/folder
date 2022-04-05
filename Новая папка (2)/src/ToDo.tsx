@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
+import {Header} from "./Components/Header";
+import {Buttons} from "./Components/Buttons";
 import {Tasks} from "./Components/Tasks";
 import {FilterType, TasksType} from "./App";
-import {Buttons} from "./Components/Buttons";
-import {AddItemForm} from "./Components/AddItemForm";
 import {EditMode} from "./Components/EditMode";
 
 type ToDoType = {
@@ -14,9 +14,8 @@ type ToDoType = {
     addTask: (title:string, todoListId:string)=> void
     changeStatus: (taskId:string, isDone: boolean,  todoListId:string)=> void
     filter: FilterType
-    changeEditMode: (taskId:string, title: string,  todoListId:string) => void
+    changeValue: (taskId:string, value: string,  todoListId:string) => void
 }
-
 export const ToDo:React.FC<ToDoType> = ({
                                             title,
                                             tasks,
@@ -26,13 +25,13 @@ export const ToDo:React.FC<ToDoType> = ({
                                             changeStatus,
                                             filter,
                                             id,
-                                            changeEditMode
+                                            changeValue
 }) => {
 
-
     const resultTasks = tasks.map(i=>{
-        const changeEditModeWrap = (title: string) => {
-            changeEditMode(i.id, title, id)
+
+        const onChange = (value: string) => {
+            changeValue(i.id, value, id)
         }
 
         return (
@@ -44,7 +43,7 @@ export const ToDo:React.FC<ToDoType> = ({
                     checked={i.isDone}
                     onChange={(e)=>changeStatus(i.id,e.currentTarget.checked, id)}
                 />
-                <EditMode title={i.title} changeEditMode={changeEditModeWrap}/>
+                <EditMode title={i.title} onChange={onChange}/>
                 <button
                     onClick={()=>remove(i.id, id)}
                 >x</button>
@@ -52,15 +51,13 @@ export const ToDo:React.FC<ToDoType> = ({
         )}
     )
 
-    const addTasks = (title: string) => {
-        addTask(title, id)
-    }
-
     return (
         <div>
-            <div>{title}</div>
-            <AddItemForm addTask={addTasks} />
-
+            <Header
+                id={id}
+                title={title}
+                addTask={addTask}
+            />
             <Tasks
                 resultTasks={resultTasks}
             />

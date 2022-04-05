@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {ToDo} from "./ToDo";
 import {v1} from "uuid";
-import {AddItemForm} from "./Components/AddItemForm";
+import {AddTodoListForm} from "./Components/AddTodoListForm";
 
 export type TasksType = {
     id: string
@@ -73,23 +73,22 @@ function App() {
         setTasks({...tasks})
     }
 
-    const addTodoList = (title: string) => {
-        const newId = v1()
-        const newTodoList: TodoListType = {id: newId, title: title, filter: 'all'}
+    const addNewTodoList = (title: string) => {
+        const newIdForTodoList = v1()
+        const newTodoList:TodoListType = {id: newIdForTodoList, title: title, filter: 'all'}
         setTodoList([newTodoList, ...todoList])
-        setTasks({...tasks, [newId]: []})
+        setTasks({...tasks, [newIdForTodoList]: []})
     }
 
-    const changeEditMode = (taskId:string, title: string,  todoListId:string) => {
+    const changeValue = (taskId:string, value: string,  todoListId:string) => {
         const todoListTasks = tasks[todoListId]
-        tasks[todoListId] = todoListTasks.map(i=>i.id === taskId ? {...i, title: title} : i)
+        tasks[todoListId] = todoListTasks.map(i=>i.id === taskId ? {...i, title: value} : i)
         setTasks({...tasks})
     }
 
     return (
         <div className="App">
-            <AddItemForm addTask={addTodoList} />
-
+            <AddTodoListForm addTask={addNewTodoList} id={'kk'} />
         {
             todoList.map(i=> {
 
@@ -112,7 +111,7 @@ function App() {
                         addTask={addTask}
                         changeStatus={changeStatus}
                         filter={i.filter}
-                        changeEditMode={changeEditMode}
+                        changeValue={changeValue}
                     />
                 )
             })

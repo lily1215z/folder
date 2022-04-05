@@ -1,12 +1,10 @@
 import React, {ChangeEvent, useState} from 'react';
 
-type HeaderType = {
-    id:string
-    title: string
-    addTask: (title:string, todoListId:string)=> void
+type AddItemFormType = {
+    addTask: (title:string) => void
 }
 
-export const Header:React.FC<HeaderType> = ({title, addTask, id}) => {
+export const AddItemForm = (props: AddItemFormType) => {
     const [newTitle, setNewTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 
@@ -16,16 +14,14 @@ export const Header:React.FC<HeaderType> = ({title, addTask, id}) => {
     }
     const onClickHandler = () => {
         if(newTitle !== '') {
-            addTask(newTitle.trim(), id)
+            props.addTask(newTitle.trim())
             setNewTitle('')
         } else {
             setError('mistake')
         }
     }
-
     return (
         <div>
-            <div>{title}</div>
             <input
                 onKeyPress={(e)=> e.key === 'Enter' && onClickHandler()}
                 className={error ? 'error' : ''}
@@ -39,8 +35,4 @@ export const Header:React.FC<HeaderType> = ({title, addTask, id}) => {
         </div>
     );
 };
-
-
-
-
 

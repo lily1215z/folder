@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
+import {Header} from "./Components/Header";
+import {Buttons} from "./Components/Buttons";
 import {Tasks} from "./Components/Tasks";
 import {FilterType, TasksType} from "./App";
-import {Buttons} from "./Components/Buttons";
-import {AddItemForm} from "./Components/AddItemForm";
-import {EditMode} from "./Components/EditMode";
+import {EditSpan} from "./Components/EditSpan";
 
 type ToDoType = {
     id:string
@@ -12,11 +12,10 @@ type ToDoType = {
     remove: (id: string, todoListId:string)=> void
     changeFilter: (value: FilterType, todoListId:string) => void
     addTask: (title:string, todoListId:string)=> void
-    changeStatus: (taskId:string, isDone: boolean,  todoListId:string)=> void
+    changeStatus: (taskId:string, isDone: boolean,  todoListId: string) => void
+    // changeTitle: (taskId:string, newTitle: string,  todoListId: string) => void
     filter: FilterType
-    changeEditMode: (taskId:string, title: string,  todoListId:string) => void
 }
-
 export const ToDo:React.FC<ToDoType> = ({
                                             title,
                                             tasks,
@@ -25,16 +24,14 @@ export const ToDo:React.FC<ToDoType> = ({
                                             addTask,
                                             changeStatus,
                                             filter,
-                                            id,
-                                            changeEditMode
+                                            id
 }) => {
 
+    const changeTitle = () => {
+
+    }
 
     const resultTasks = tasks.map(i=>{
-        const changeEditModeWrap = (title: string) => {
-            changeEditMode(i.id, title, id)
-        }
-
         return (
             <li key={i.id}
                 className={i.isDone ? 'is-done' : ''}
@@ -44,7 +41,7 @@ export const ToDo:React.FC<ToDoType> = ({
                     checked={i.isDone}
                     onChange={(e)=>changeStatus(i.id,e.currentTarget.checked, id)}
                 />
-                <EditMode title={i.title} changeEditMode={changeEditModeWrap}/>
+                <EditSpan title={i.title}  onChange={changeTitle}/>
                 <button
                     onClick={()=>remove(i.id, id)}
                 >x</button>
@@ -52,15 +49,13 @@ export const ToDo:React.FC<ToDoType> = ({
         )}
     )
 
-    const addTasks = (title: string) => {
-        addTask(title, id)
-    }
-
     return (
         <div>
-            <div>{title}</div>
-            <AddItemForm addTask={addTasks} />
-
+            <Header
+                id={id}
+                title={title}
+                addTask={addTask}
+            />
             <Tasks
                 resultTasks={resultTasks}
             />
